@@ -1,5 +1,7 @@
 import Head from "next/head";
 import styles from "./layout.module.css";
+import utilStyles from "../styles/utils.module.css";
+import Link from "next/link";
 
 const name = "Bike Shop !";
 export const siteTitle = "bike shop";
@@ -12,7 +14,13 @@ function Layout({children}) {
 			</Head>
 			<header className={styles.header}>
 				<div className={styles.header_inner}>
-					<h1 className={styles.title}>{name}</h1>
+					<Link href="/" >
+						<a>
+							<h1 className={`${utilStyles.heading2xl} ${styles.title}`} >
+								{name}
+							</h1>
+						</a>
+					</Link>
 				</div>
 			</header>
 			<main>

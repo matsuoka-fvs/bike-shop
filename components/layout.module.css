@@ -1,6 +1,6 @@
 .header{
 	background-color: blue;
-	padding: 0.5rem 0;
+	padding: 0.5rem 1rem;
 }
 
 .header_inner{
@@ -9,6 +9,5 @@
 }
 
 .title{
-	font-size: 2rem;
+	color: white;
 }
-
