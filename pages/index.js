@@ -3,9 +3,21 @@ import styles from '../styles/index.module.css'
 import utilStyles from '../styles/utils.module.css'
 import Layout from '../components/Layout'
 import Link from "next/link";
+import { db } from "../firebase.js";
+import React, { useState, useEffect } from 'react';
 
 
 export default function Home() {
+  const [bikes, setBikes] = useState([]);
+	useEffect(() => {
+		db.collection("bikes")
+			.orderBy("createdAt")
+			.limit(50)
+			.onSnapshot((snapshot) => {
+				setBikes(snapshot.docs.map((doc) => doc.data()));
+			});
+	}, []);
+
   return (
     <Layout>
       <main className={styles.main}>
@@ -26,82 +38,24 @@ export default function Home() {
           <div>
             <h2 className={styles.title}>バイク一覧</h2>
           <div className={styles.bike_index}>
-            
-            <article className={styles.article}>
-              <Link href="/bike/cb400-sf">
-                <a >
-                  <div>
-                    <p className={`${utilStyles.font_small}`}>メーカー</p>
-                    <p className={`${utilStyles.font_bold}`}>車種名</p>
-                    <p className={`${utilStyles.font_small}`}> 
-                      <span className={`${utilStyles.font_bold} ${utilStyles.font_normal}`}>値段</span>
-                      　円
-                    </p>
-                    <img src="/images/cb400-sf.png" className={styles.bike_img} />
-                  </div>
-                </a>
-              </Link>
-            </article>
-            <article className={styles.article}>
-              <Link href="/">
-                <a >
-                  <div>
-                    <p className={`${utilStyles.font_small}`}>メーカー</p>
-                    <p className={`${utilStyles.font_bold}`}>車種名</p>
-                    <p className={`${utilStyles.font_small}`}> 
-                      <span className={`${utilStyles.font_bold} ${utilStyles.font_normal}`}>値段</span>
-                      　円
-                    </p>
-                    <img src="/images/cb400-sf.png" className={styles.bike_img} />
-                  </div>
-                </a>
-              </Link>
-            </article>
-            <article className={styles.article}>
-              <Link href="/">
-                <a >
-                  <div>
-                    <p className={`${utilStyles.font_small}`}>メーカー</p>
-                    <p className={`${utilStyles.font_bold}`}>車種名</p>
-                    <p className={`${utilStyles.font_small}`}> 
-                      <span className={`${utilStyles.font_bold} ${utilStyles.font_normal}`}>値段</span>
-                      　円
-                    </p>
-                    <img src="/images/cb400-sf.png" className={styles.bike_img} />
-                  </div>
-                </a>
-              </Link>
-            </article>
-            <article className={styles.article}>
-              <Link href="/">
-                <a >
-                  <div>
-                    <p className={`${utilStyles.font_small}`}>メーカー</p>
-                    <p className={`${utilStyles.font_bold}`}>車種名</p>
-                    <p className={`${utilStyles.font_small}`}> 
-                      <span className={`${utilStyles.font_bold} ${utilStyles.font_normal}`}>値段</span>
-                      　円
-                    </p>
-                    <img src="/images/cb400-sf.png" className={styles.bike_img} />
-                  </div>
-                </a>
-              </Link>
-            </article>
-            <article className={styles.article}>
-              <Link href="/">
-                <a >
-                  <div>
-                    <p className={`${utilStyles.font_small}`}>メーカー</p>
-                    <p className={`${utilStyles.font_bold}`}>車種名</p>
-                    <p className={`${utilStyles.font_small}`}> 
-                      <span className={`${utilStyles.font_bold} ${utilStyles.font_normal}`}>値段</span>
-                      　円
-                    </p>
-                    <img src="/images/cb400-sf.png" className={styles.bike_img} />
-                  </div>
-                </a>
-              </Link>
-            </article>
+            {bikes.map(({ id, name , maker , price , ind_img_path }) => (
+              <article className={styles.article}>
+                <Link href={`/bike/${id}`}>
+                  <a >
+                    <div>
+                      <p className={`${utilStyles.font_small}`}>{maker}</p>
+                      <p className={`${utilStyles.font_bold}`}>{name}</p>
+                      <p className={`${utilStyles.font_small}`}> 
+                        <span className={`${utilStyles.font_bold} ${utilStyles.font_normal}`}>{price}</span>
+                        　円
+                      </p>
+                      <img src={ind_img_path} className={styles.bike_img} />
+                    </div>
+                  </a>
+                </Link>
+              </article>
+            ))}
+
            </div>
           </div>
         </div>

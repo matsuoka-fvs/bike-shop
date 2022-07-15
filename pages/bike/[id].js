@@ -3,8 +3,28 @@ import Head from "next/head";
 import Link from "next/link";
 import styles from '../../styles/show.module.css'
 import utilStyles from '../../styles/utils.module.css'
+import { getPostData, getAllBikeIds}  from "../../lib/bike";
 
-export default function() {
+export async function getStaticPaths() {
+	const paths = getAllBikeIds();
+
+	return {
+		paths,
+		fallback: false,
+	}
+}
+
+export async function getStaticProps({params}) {
+	const bikeData = await getPostData(params.id);
+
+	return {
+		props: {
+			bikeData,
+		},
+	};
+}
+
+export default function Bike({bikeData}) {
 	return (
 		<Layout>
 			<Head>
@@ -12,7 +32,7 @@ export default function() {
 			</Head>
 			<div className={`${styles.inner}`}>
 				<div className={`${styles.name_box}`}>
-					<h2 className={`${styles.name} ${utilStyles.heading2xl}`}>ホンダ　CB400-sf</h2>
+					<h2 className={`${styles.name} ${utilStyles.heading2xl}`}>{bikeData.name}</h2>
 					<div className={`${styles.detail_area}`}>
 						<img src="/images/cb400-sf-show.png" className={styles.bike_img} />
 						<div className={`${styles.price_area}`}>
